@@ -18,6 +18,10 @@ namespace NT_Project.Models
 
         public ICollection<Relationship> Relationships { get; set; }
 
+        public ICollection<Post> post { get; set; }
+
+        public ICollection<Comment> comments { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -39,7 +43,9 @@ namespace NT_Project.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<NT_Project.Models.Relationship> Relationships { get; set; }
-        
+        public DbSet<NT_Project.Models.Relationship> Relationships { get; set; }
+        public DbSet<NT_Project.Models.Post> posts { get; set; }
+        public DbSet<NT_Project.Models.Comment> comments { get; set; }
+
     }
 }
