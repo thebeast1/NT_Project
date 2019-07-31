@@ -15,7 +15,7 @@ namespace NT_Project.Models
         public ApplicationUser user { get; set; }
         public Post post { get; set; }
 
-        public int user_id_for_comment { get; set; }
-        public int post_id { get; set; }
+        public string user_id_for_comment { get; set; }
+        public string post_id { get; set; }
     }
 }

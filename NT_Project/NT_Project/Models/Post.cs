@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,8 @@ namespace NT_Project.Models
 
         public ICollection<Comment> comments { get; set; }
 
-        public int user_id_for_posts { get; set; }
+        public string user_id_for_posts { get; set; }
+        [NotMapped]
+        public string name { get; set; }
     }
 }

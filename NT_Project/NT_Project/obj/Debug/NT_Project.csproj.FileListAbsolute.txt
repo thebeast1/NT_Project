@@ -170,5 +170,6 @@ C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.CopyComplete
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.dll
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.pdb
-C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.test.resources
+C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.csprojAssemblyReference.cache
+C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.test2.resources
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.GenerateResource.cache

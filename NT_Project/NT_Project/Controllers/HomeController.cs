@@ -15,7 +15,56 @@ namespace NT_Project.Controllers
         
         public ActionResult Index()
         {
-            return View();
+
+            var cur_id = User.Identity.GetUserId();
+            var friends1 = from relationship in db.Relationships
+                           where relationship.UserId == cur_id
+                           select relationship.FriendId;
+
+            var friends2 = from relationship in db.Relationships
+                           where relationship.FriendId == cur_id
+                           select relationship.UserId;
+
+            var friends = friends1.ToList().Concat(friends2.ToList()).ToList();
+
+            List<Post> Posts = new List<Post>();
+            if (friends!= null)
+            {
+                foreach (var items in friends)
+                {
+
+                    foreach (var posts2 in db.posts)
+                    {
+                        if (posts2.user_id_for_posts == items)
+                        {
+                            var name = from user in db.Users
+                                           where user.Id == posts2.user_id_for_posts
+                                       select user.FullName;
+                            foreach(string i in name)
+                            posts2.name = i;
+                            Posts.Add(posts2);
+                            
+                        }
+                    }
+                }
+            }
+            
+            
+                foreach (var posts in db.posts)
+                {
+                    if (posts.user_id_for_posts == cur_id)
+                    {
+                    var name = from user in db.Users
+                               where user.Id == posts.user_id_for_posts
+                               select user.FullName;
+                    foreach (string i in name)
+                        posts.name = i;
+                    Posts.Add(posts);
+                }
+
+                }
+            
+                return View(Posts);
         }
 
         
@@ -116,6 +165,9 @@ namespace NT_Project.Controllers
             return RedirectToAction("Index");
         }
 
+       
+
+       
 
     }
 }
