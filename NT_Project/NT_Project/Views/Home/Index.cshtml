@@ -5,30 +5,33 @@
 
 @using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { @class = "form-inline" }))
 {
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">AddPost</button>
+    @Html.AntiForgeryToken()
+<button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Add Post</button>
 }
-    <table class="table">
-        @foreach (var item in Model)
-        {
-            <tr style="boder:1px">
-                <td style="boder:1px">
-                    <header>
-                        @Html.DisplayFor(modelItem => item.name)
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr style="boder:1px">
+            <td style="boder:1px">
+                <header>
+                    @Html.DisplayFor(modelItem => item.Name)
 
-                    </header>
-                    <p>
-                        @Html.DisplayFor(modelItem => item.post_message)
-                    </p>
-                    <br />
-                    <p>
-                        @Html.DisplayFor(modelItem => item.post_date)
-                    </p>
-                    <br />
-                    @using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { @class = "form-inline" }))
-                    {
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">AddComment</button>
-                    }
-                </td>
-            </tr>
-        }
-        
+                </header>
+                <p>
+                    @Html.DisplayFor(modelItem => item.PostMessage)
+                </p>
+                <br />
+                <p>
+                    @Html.DisplayFor(modelItem => item.PostDate)
+                </p>
+                <br />
+                @using (Html.BeginForm("Index", "Comments", FormMethod.Post,new { postID= item.Id }))
+                        {
+                            ViewBag.Data = item.Id;
+                <h2>@ViewBag.Data</h2>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Show Comments</button>
+                }
+            </td>
+        </tr>
+    }
+

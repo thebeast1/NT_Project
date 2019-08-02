@@ -7,8 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NT_Project.Models;
-using Microsoft.AspNet.Identity;
-using NT_Project.ViewModel;
 
 namespace NT_Project.Controllers
 {
@@ -19,10 +17,10 @@ namespace NT_Project.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            return View(db.posts.ToList());
+            var posts = db.Posts.Include(p => p.User);
+            return View(posts.ToList());
         }
 
-        
         // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,41 +28,36 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.posts.Find(id);
+            Post post = db.Posts.Find(id);
             if (post == null)
             {
                 return HttpNotFound();
             }
             return View(post);
         }
-
+        
         // GET: Posts/Create
         public ActionResult Create()
         {
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 
-       
         // POST: Posts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,post_message")] Post post)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,PostMessage,PostDate,UserId")] Post post)
         {
-            
-            if (ModelState.IsValid&&string.IsNullOrEmpty(post.post_message)==false)
+            if (ModelState.IsValid)
             {
-                var cur_user = User.Identity.GetUserId();
-                post.post_date = DateTime.Now;
-                post.user_id_for_posts = cur_user;
-                db.posts.Add(post);
+                db.Posts.Add(post);
                 db.SaveChanges();
-                
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index");
             }
-            
+
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", post.UserId);
             return View(post);
         }
 
@@ -75,11 +68,12 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.posts.Find(id);
+            Post post = db.Posts.Find(id);
             if (post == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", post.UserId);
             return View(post);
         }
 
@@ -88,7 +82,7 @@ namespace NT_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,post_message,post_date,user_id_for_posts")] Post post)
+        public ActionResult Edit([Bind(Include = "Id,PostMessage,PostDate,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -96,6 +90,7 @@ namespace NT_Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", post.UserId);
             return View(post);
         }
 
@@ -106,7 +101,7 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.posts.Find(id);
+            Post post = db.Posts.Find(id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -119,8 +114,8 @@ namespace NT_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Post post = db.posts.Find(id);
-            db.posts.Remove(post);
+            Post post = db.Posts.Find(id);
+            db.Posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -33,15 +33,15 @@ namespace NT_Project.Controllers
                 foreach (var items in friends)
                 {
 
-                    foreach (var posts2 in db.posts)
+                    foreach (var posts2 in db.Posts)
                     {
-                        if (posts2.user_id_for_posts == items)
+                        if (posts2.UserId == items)
                         {
                             var name = from user in db.Users
-                                           where user.Id == posts2.user_id_for_posts
+                                           where user.Id == posts2.UserId
                                        select user.FullName;
                             foreach(string i in name)
-                            posts2.name = i;
+                            posts2.Name = i;
                             Posts.Add(posts2);
                             
                         }
@@ -50,15 +50,15 @@ namespace NT_Project.Controllers
             }
             
             
-                foreach (var posts in db.posts)
+                foreach (var posts in db.Posts)
                 {
-                    if (posts.user_id_for_posts == cur_id)
+                    if (posts.UserId == cur_id)
                     {
                     var name = from user in db.Users
-                               where user.Id == posts.user_id_for_posts
+                               where user.Id == posts.UserId
                                select user.FullName;
                     foreach (string i in name)
-                        posts.name = i;
+                        posts.Name = i;
                     Posts.Add(posts);
                 }
 
@@ -96,6 +96,7 @@ namespace NT_Project.Controllers
             //  1 => request - 2 => friend
             var myID = User.Identity.GetUserId();
 
+            
             db.Relationships.Add(new Relationship
             {
                 UserId = myID,
@@ -122,7 +123,7 @@ namespace NT_Project.Controllers
             var friends2 = from relationship in db.Relationships
                            where relationship.FriendId == myID
                            select relationship.UserId;
-
+            
             ViewBag.userRelation = friends1.ToList().Concat(friends2.ToList()).ToList();
             
             var users = db.Users.Where( a => a.Id != myID && (a.FullName.Contains(search) || 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -8,17 +9,20 @@ namespace NT_Project.Models
 {
     public class Post
     {
-        public int id { get; set; }
-        public string post_message { get; set; }
-        public DateTime? post_date { get; set; }
-        public ApplicationUser user { get; set; }
-        public ICollection<string> photos { get; set; }
-        public ICollection<string> videos { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string PostMessage { get; set; }
+        public DateTime? PostDate { get; set; }
+        public ICollection<string> Photos { get; set; }
+        public ICollection<string> Videos { get; set; }
 
-        public ICollection<Comment> comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
-        public string user_id_for_posts { get; set; }
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+
         [NotMapped]
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 }

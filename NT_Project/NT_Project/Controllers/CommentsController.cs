@@ -17,8 +17,20 @@ namespace NT_Project.Controllers
         // GET: Comments
         public ActionResult Index()
         {
-            return View(db.comments.ToList());
+            /*int postId = ViewBag.Data;
+            
+            var listOfComments = db.Comments.Where(c => c.PostId == postId).ToList();
+            */
+            return View(db.Comments.ToList());
         }
+        
+
+
+        public ActionResult ShowComments()
+        {
+            return View();
+        }
+
 
         // GET: Comments/Details/5
         public ActionResult Details(int? id)
@@ -27,7 +39,7 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.comments.Find(id);
+            Comment comment = db.Comments.Find(id);
             if (comment == null)
             {
                 return HttpNotFound();
@@ -50,7 +62,7 @@ namespace NT_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.comments.Add(comment);
+                db.Comments.Add(comment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +77,7 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.comments.Find(id);
+            Comment comment = db.Comments.Find(id);
             if (comment == null)
             {
                 return HttpNotFound();
@@ -96,7 +108,7 @@ namespace NT_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.comments.Find(id);
+            Comment comment = db.Comments.Find(id);
             if (comment == null)
             {
                 return HttpNotFound();
@@ -109,8 +121,8 @@ namespace NT_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Comment comment = db.comments.Find(id);
-            db.comments.Remove(comment);
+            Comment comment = db.Comments.Find(id);
+            db.Comments.Remove(comment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

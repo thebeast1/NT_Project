@@ -13,13 +13,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.post_message)
+            @Html.DisplayNameFor(model => model.User.FullName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.post_date)
+            @Html.DisplayNameFor(model => model.PostMessage)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.user_id_for_posts)
+            @Html.DisplayNameFor(model => model.PostDate)
         </th>
         <th></th>
     </tr>
@@ -27,18 +27,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.post_message)
+            @Html.DisplayFor(modelItem => item.User.FullName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.post_date)
+            @Html.DisplayFor(modelItem => item.PostMessage)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.user_id_for_posts)
+            @Html.DisplayFor(modelItem => item.PostDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
