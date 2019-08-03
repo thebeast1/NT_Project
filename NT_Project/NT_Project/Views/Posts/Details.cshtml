@@ -1,0 +1,43 @@
+﻿@model NT_Project.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Post</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.post_message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post_message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user_id_for_posts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_id_for_posts)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

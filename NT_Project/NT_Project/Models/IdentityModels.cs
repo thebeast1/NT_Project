@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,18 @@ namespace NT_Project.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public string FullName { get; set; }
+
+        public string Bio { get; set; }
+
+        public string Photo_Url { get; set; }
+
+        public ICollection<Relationship> Relationships { get; set; }
+
+        public ICollection<Post> post { get; set; }
+
+        public ICollection<Comment> comments { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -29,5 +42,10 @@ namespace NT_Project.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<NT_Project.Models.Relationship> Relationships { get; set; }
+        public DbSet<NT_Project.Models.Post> posts { get; set; }
+        public DbSet<NT_Project.Models.Comment> comments { get; set; }
+
     }
 }
