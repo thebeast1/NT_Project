@@ -19,6 +19,7 @@ namespace NT_Project.Controllers
             var cur_id = User.Identity.GetUserId();
             var friends1 = from relationship in db.Relationships
                            where relationship.UserId == cur_id
+                           where relationship.Status == 2
                            select relationship.FriendId;
 
             var friends2 = from relationship in db.Relationships
@@ -38,9 +39,13 @@ namespace NT_Project.Controllers
                         if (posts2.user_id_for_posts == items)
                         {
                             var name = from user in db.Users
-                                           where user.Id == posts2.user_id_for_posts
+                                       where user.Id == posts2.user_id_for_posts
                                        select user.FullName;
-                            foreach(string i in name)
+                            var comms = from com in db.comments
+                                        where com.post_id == posts2.id.ToString()
+                                        select com.id;
+                            posts2.no_of_comms = comms.ToList().Count.ToString();
+                            foreach (string i in name)
                             posts2.name = i;
                             Posts.Add(posts2);
                             
@@ -57,17 +62,35 @@ namespace NT_Project.Controllers
                     var name = from user in db.Users
                                where user.Id == posts.user_id_for_posts
                                select user.FullName;
+
+                    var comms = from com in db.comments
+                                where com.post_id == posts.id.ToString()
+                                select com.id;
+                    posts.no_of_comms = comms.ToList().Count.ToString();
                     foreach (string i in name)
                         posts.name = i;
                     Posts.Add(posts);
                 }
 
                 }
+
+            var ord_posts = from p in Posts
+                            orderby p.post_date
+                            select p;
             
-                return View(Posts);
+                return View(ord_posts.ToList());
         }
 
-        
+        public ActionResult AddprofilePic()
+        {
+            return View();
+        }
+        //[HttpPost]
+        //public Action AddProfile()
+        //{
+            
+        //}
+
         public ActionResult Friends()
         {
             var myID = User.Identity.GetUserId();

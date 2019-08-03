@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NT_Project.Models;
 
 namespace NT_Project.Controllers
@@ -15,11 +16,33 @@ namespace NT_Project.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Comments
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
-            return View(db.comments.ToList());
+            List<Comment> comments = new List<Comment>();
+            foreach (var comms in db.comments)
+            {
+                if (comms.post_id == id)
+                {
+                    var name = from user in db.Users
+                               where user.Id == comms.user_id_for_comment
+                               select user.FullName;
+                    foreach (string i in name)
+                        comms.user_name = i;
+                    comments.Add(comms);
+                }
+
+            }
+            if (comments.Count == 0)
+            {
+                return RedirectToAction("EmptyComments","Comments");
+            }
+            return View(comments);
         }
 
+        public ActionResult EmptyComments()
+        {
+            return View();
+        }
         // GET: Comments/Details/5
         public ActionResult Details(int? id)
         {
@@ -46,14 +69,23 @@ namespace NT_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,comment_message,comment_date,user_id_for_comment,post_id")] Comment comment)
+        public ActionResult Create([Bind(Include = "id,comment_message")] Comment comment,int id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && string.IsNullOrEmpty(comment.comment_message) == false)
             {
+                var cur_user = User.Identity.GetUserId();
+                comment.comment_date = DateTime.Now;
+                comment.user_id_for_comment = cur_user;
+                comment.post_id = id.ToString();
                 db.comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                
+                return RedirectToAction("Index", "Home");
             }
+
+          
+
 
             return View(comment);
         }

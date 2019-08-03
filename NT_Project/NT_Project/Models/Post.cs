@@ -20,5 +20,12 @@ namespace NT_Project.Models
         public string user_id_for_posts { get; set; }
         [NotMapped]
         public string name { get; set; }
+        [NotMapped]
+        public string no_of_comms { get; set; }
+        
+        public string url { get; set; }
+
+        //[NotMapped]
+        //public HttpPostedFileBase ImgFile { get; set; }
     }
 }

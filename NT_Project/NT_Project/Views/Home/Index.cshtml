@@ -3,32 +3,72 @@
     ViewBag.Title = "Home Page";
 }
 
-@using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { @class = "form-inline" }))
+@using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { enctype = "multiprt/form-data" }))
 {
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">AddPost</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Add Post</button>
 }
-    <table class="table">
-        @foreach (var item in Model)
-        {
-            <tr style="boder:1px">
-                <td style="boder:1px">
-                    <header>
-                        @Html.DisplayFor(modelItem => item.name)
+@using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { enctype = "multiprt/form-data" }))
+{
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Add photo</button>
+}
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr style="boder:1px">
+            <td style="boder:1px">
 
-                    </header>
-                    <p>
-                        @Html.DisplayFor(modelItem => item.post_message)
-                    </p>
-                    <br />
-                    <p>
-                        @Html.DisplayFor(modelItem => item.post_date)
-                    </p>
-                    <br />
-                    @using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { @class = "form-inline" }))
+                <header>
+                    @Html.DisplayFor(modelItem => item.name)
+
+
+
+                </header>
+                <p>
+                    @Html.DisplayFor(modelItem => item.post_message)
+                </p>
+                <br />
+                <p>
+
+                    @if (item.url != null)
                     {
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">AddComment</button>
+                        <img src="@Url.Content(item.url)" alt="IMAGES" width="50" height="50" / >
                     }
-                </td>
-            </tr>
-        }
-        
+
+
+                </p>
+                <br />
+                <p>
+                    @Html.DisplayFor(modelItem => item.post_date)
+
+                </p>
+
+
+
+
+                <br />
+
+                <table>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.no_of_comms) Comments
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Create", "Comments", new { id = item.id }, FormMethod.Post, null))
+                            {
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Add Comment</button>
+                            }
+                        </td>
+
+                        <td>
+                            @using (Html.BeginForm("Index", "Comments", new { id = item.id }, FormMethod.Post, null))
+                            {
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">View Comments</button>
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    }
+

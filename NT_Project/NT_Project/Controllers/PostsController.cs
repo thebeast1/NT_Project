@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using NT_Project.Models;
 using Microsoft.AspNet.Identity;
 using NT_Project.ViewModel;
+using System.IO;
 
 namespace NT_Project.Controllers
 {
@@ -51,12 +52,29 @@ namespace NT_Project.Controllers
         [Authorize]
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,post_message")] Post post)
+        public ActionResult Create(Post post)
         {
             
             if (ModelState.IsValid&&string.IsNullOrEmpty(post.post_message)==false)
             {
+                 //ImgFile = Request.Files["ImgFile"];
+                //if (ImgFile != null)
+                //{
+                //    string filename = Path.GetFileNameWithoutExtension(ImgFile.FileName);
+                //    string extension = Path.GetExtension(ImgFile.FileName);
+                //    filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
+                //    post.url = "~/Image/" + filename;
+                //    filename = Path.Combine(Server.MapPath("~/Image/"), filename);
+                //    ImgFile.SaveAs(filename);
+                //}
                 var cur_user = User.Identity.GetUserId();
+                ApplicationUser current_user = new ApplicationUser();
+                //var user = from userss in db.Users
+                //           where userss.Id == cur_user
+                //           select userss;
+                //foreach (var i in user)
+                //    current_user = i;
+                //post.user = current_user;
                 post.post_date = DateTime.Now;
                 post.user_id_for_posts = cur_user;
                 db.posts.Add(post);
