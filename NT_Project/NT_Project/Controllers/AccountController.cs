@@ -152,8 +152,12 @@ namespace NT_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email , Bio = model.Bio ,
+                                                 Photo_Url = model.Photo_Url, PhoneNumber= model.phonenumber,FullName=model.FullName};
+
+
                 var result = await UserManager.CreateAsync(user, model.Password);
+               
                 if (result.Succeeded)
                 {
 

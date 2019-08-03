@@ -19,9 +19,9 @@ namespace NT_Project.Controllers
         public ActionResult Index()
         {
             var relationships = db.Relationships.Include(r => r.Friend).Include(r => r.User);
-            if (User.IsInRole("CanShowUsers"))
-                return View("Index");
-            return View(relationships.ToList());
+           
+                return View(relationships.ToList());
+            
         }
 
         // GET: Relationships/Details/5

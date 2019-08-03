@@ -75,6 +75,22 @@ namespace NT_Project.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+
+        [Required]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+
+        [Display(Name = "User Bio")]
+        public string Bio { get; set; }
+
+        [Display(Name = "photo URL")]
+        public string Photo_Url { get; set; }
+
+        [Required]
+        [Display(Name = "Phone Number")]
+        public string phonenumber { get; set; }
+
+
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

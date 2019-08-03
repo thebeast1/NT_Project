@@ -44,6 +44,7 @@ namespace NT_Project.Controllers
         }
 
 
+
         [Authorize]
         public ActionResult AddFriend(string id)
         {
@@ -64,15 +65,48 @@ namespace NT_Project.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Update_profile()
+        {
+            var myID = User.Identity.GetUserId();
+            var userupdate = db.Users.Where(u => u.Id == myID).First();
+
+            return View(userupdate);
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update_profile(RegisterViewModel model)
+        {
+            var myID = User.Identity.GetUserId();
+
+            var uservar = new ApplicationUser { UserName = model.Email, Email = model.Email , Bio = model.Bio ,
+            Photo_Url = model.Photo_Url, PhoneNumber= model.phonenumber   };
+
+          var userupdate= db.Users.Where(u => u.Id == myID).First();
+
+
+            if(uservar.UserName!=null)
+                userupdate.FullName = uservar.UserName;
+            
+            
+            if (uservar.Bio != null)
+                userupdate.Bio = uservar.Bio;
+            if (uservar.Photo_Url != null)
+                userupdate.Photo_Url = uservar.Photo_Url;
+            if (uservar.PhoneNumber != null)
+                userupdate.PhoneNumber = uservar.PhoneNumber;
+
+            
+            db.SaveChanges();
+
+            return RedirectToAction("Update_profile", "Home");
+        }
+
         [Authorize(Roles = "CanShowUsers")]
         public ActionResult DeleteUser(string id)
         {
-
-
-            NT_Project.Models.ApplicationUser user = db.Users.Where(a => a.Id == id).FirstOrDefault();
-
-            NT_Project.Models.Relationship relation = db.Relationships.Where(a => a.UserId  == id || a.FriendId == id).FirstOrDefault();
-
             var postt = (from Post in db.posts
                         where Post.user_id_for_posts.ToString() == id
                         select Post).ToList();
@@ -98,11 +132,26 @@ namespace NT_Project.Controllers
             }
 
 
-            var relt = (from relationship in db.Relationships
-                         where relationship.UserId.ToString() == id
+            var reltuser = (from relationship in db.Relationships
+                         where relationship.UserId.ToString() == id                         
                          select relationship).ToList();
-            if(relt.Count()>0)
-            db.Relationships.Remove(relation);
+
+            var reltfriend = (from relationship in db.Relationships
+                            where relationship.FriendId.ToString() == id
+                            select relationship).ToList();
+
+            if (reltuser.Count() > 0)
+            {
+                NT_Project.Models.Relationship relation = db.Relationships.Where(a => a.UserId == id ).FirstOrDefault();
+                db.Relationships.Remove(relation);
+            }
+            if (reltfriend.Count() > 0)
+            {
+                NT_Project.Models.Relationship relation = db.Relationships.Where(a =>  a.FriendId == id).FirstOrDefault();
+                db.Relationships.Remove(relation);
+            }
+
+            NT_Project.Models.ApplicationUser user = db.Users.Where(a => a.Id == id).FirstOrDefault();
 
             db.Users.Remove(user);
 
@@ -116,11 +165,12 @@ namespace NT_Project.Controllers
         {
             var myID = User.Identity.GetUserId();
 
-            var list_users = (from user in db.Users
-                              where user.Id != myID
-                             select user).ToList();
-          
-            return View(list_users);
+            //var list_users = (from user in db.Users
+            //                  where user.Id != myID
+            //                 select user).ToList();
+            var users = db.Users.Where(x=>x.Id!=myID ).ToList();
+            
+            return View(users);
         }
 
         [Authorize]
@@ -139,7 +189,7 @@ namespace NT_Project.Controllers
             ViewBag.userRelation = friends1.ToList().Concat(friends2.ToList()).ToList();
             
             var users = db.Users.Where( a => a.Id != myID && (a.FullName.Contains(search) || 
-                                        a.Email.Contains(search) || a.PhoneNumber.Contains(search)) ).ToList();
+                                        a.Email.Contains(search) || a.PhoneNumber.Contains(search)) && a.Email != "Admin@gmail.com").ToList();
             if (User.IsInRole("CanShowUsers"))
                 return View("Index");
             return View(users);

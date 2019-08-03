@@ -48,6 +48,10 @@ namespace NT_Project.Models
         public DbSet<NT_Project.Models.Post> posts { get; set; }
         public DbSet<NT_Project.Models.Comment> comments { get; set; }
 
-       // public System.Data.Entity.DbSet<NT_Project.Models.ApplicationUser> ApplicationUsers { get; set; }
+     //   public System.Data.Entity.DbSet<NT_Project.Models.ApplicationUser> ApplicationUsers { get; set; }
+
+        //public System.Data.Entity.DbSet<NT_Project.Models.ApplicationUser> ApplicationUsers { get; set; }
+
+        // public System.Data.Entity.DbSet<NT_Project.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

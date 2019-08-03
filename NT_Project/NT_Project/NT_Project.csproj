@@ -257,6 +257,8 @@
     <Content Include="Views\Home\Friends.cshtml" />
     <Content Include="Views\Home\showAllUsers.cshtml" />
     <Content Include="Views\Home\showusers.cshtml" />
+    <Content Include="Views\Home\updateprofile.cshtml" />
+    <Content Include="Views\Home\Update_profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
