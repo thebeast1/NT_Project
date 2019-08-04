@@ -8,8 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body style="background-color:black !important;">
+    <div class="navbar navbar-inverse navbar-fixed-top"> 
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -17,21 +17,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("NoseBook", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("BlackBook", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Friends", "Friends", "Home")</li>
-                  
-                    <li>@Html.ActionLink("Relationships", "Index", "Relationships")</li>
-                    <li>@Html.ActionLink("Requests", "Requests", "Home")</li>
-                    <li>
-                        @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-inline" }))
-                        {
-                            <input class="form-control mr-sm-2" name="search" id="search" type="search" placeholder="Search for a friend .." aria-label="Search" style="margin-top:10px; margin-left:100px;">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Search</button>
-                        }
-                    </li>
+                    @if (!User.IsInRole("CanShowUsers"))
+                    {
+                        <li>@Html.ActionLink("Friends", "Friends", "Home")</li>
+                        <li>@Html.ActionLink("update profile", "Update_profile", "Home")</li>
+                        <li>@Html.ActionLink("Requests", "Requests", "Home")</li>
+                        <li>
+                            @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-inline" }))
+                            {
+                                <input class="form-control mr-sm-2" name="search" id="search" type="search" placeholder="Search for a friend .." aria-label="Search" style="margin-top:10px; margin-left:80px;">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Search</button>
+                            }
+                        </li>
+                        <li>@Html.ActionLink("Profile", "Profile", "Account")</li>
+
+                    }
+                    else if (User.IsInRole("CanShowUsers"))
+                    {
+                        <li>@Html.ActionLink("Relationships", "Index", "Relationships")</li>
+                        <li>@Html.ActionLink("show All Users", "showusers", "Home")</li>
+
+                    }
                 </ul>
                 
                 @Html.Partial("_LoginPartial")

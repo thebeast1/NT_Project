@@ -25,18 +25,25 @@
         </th>
         <th></th>
     </tr>
-
+   
 @foreach (var item in Model)
 {
     <tr>
+
+        <td>
+
+            @if (item.Photo_Url != null)
+            {
+                <img src="@Url.Content(item.Photo_Url)" alt="IMAGES" height="60" width="60"/>
+            }
+
+        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.FullName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Bio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Photo_Url)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)

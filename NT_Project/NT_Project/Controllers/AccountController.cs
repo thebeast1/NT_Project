@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NT_Project.Models;
@@ -17,6 +19,9 @@ namespace NT_Project.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -50,6 +55,58 @@ namespace NT_Project.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        public ActionResult Profile ()
+        {
+            var cur_id = User.Identity.GetUserId();
+            ApplicationUser user2 = db.Users.Where(u => u.Id == cur_id).FirstOrDefault();
+            List<Post> Posts = new List<Post>();
+            
+            foreach (var posts in db.posts)
+            {
+                if (posts.user_id_for_posts == cur_id)
+                {
+                    var name = from user in db.Users
+                               where user.Id == posts.user_id_for_posts
+                               select new { user.FullName, user.Photo_Url };
+
+                    var comms = from com in db.comments
+                                where com.post_id == posts.id.ToString()
+                                select com.id;
+                    posts.no_of_comms = comms.ToList().Count.ToString();
+                    foreach (var i in name)
+                    {
+                        posts.name = i.FullName.ToString();
+                        posts.pic = i.Photo_Url;
+                    }
+                    Posts.Add(posts);
+                }
+
+            }
+            ViewBag.Posts = Posts;
+
+
+
+
+            var users = (from relations in db.Relationships
+                         join user in db.Users
+                         on relations.UserId equals user.Id
+                         where (relations.FriendId == cur_id)
+                         where relations.Status == 2
+                         select user).ToList();
+
+            var users2 = (from relations in db.Relationships
+                          join user in db.Users
+                          on relations.FriendId equals user.Id
+                          where (relations.UserId == cur_id)
+                          where relations.Status == 2
+                          select user).ToList();
+            users.ToList().Concat(users2.ToList()).ToList();
+
+            ViewBag.Friends = users;
+
+            return View(user2);
         }
 
         //
@@ -151,12 +208,28 @@ namespace NT_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Bio = model.Bio,
+                    Photo_Url = model.Photo_Url,
+                    PhoneNumber = model.phonenumber,
+                    FullName = model.FullName
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+
+                    //var rolestore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    //var roleManager = new RoleManager<IdentityRole>(rolestore);
+                    //await roleManager.CreateAsync(new IdentityRole("CanShowUsers"));
+                    //await UserManager.AddToRoleAsync(user.Id, "CanShowUsers");
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

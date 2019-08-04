@@ -13,7 +13,7 @@ namespace NT_Project.Models
         public DateTime? comment_date { get; set; }
 
 
-        public ApplicationUser user { get; set; }
+        public virtual ApplicationUser user { get; set; }
         public Post post { get; set; }
 
         public string user_id_for_comment { get; set; }

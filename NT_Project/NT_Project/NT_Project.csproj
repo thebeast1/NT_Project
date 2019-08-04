@@ -180,6 +180,14 @@
     <Compile Include="Migrations\201907311656526_test2.Designer.cs">
       <DependentUpon>201907311656526_test2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908032308239_test3.cs" />
+    <Compile Include="Migrations\201908032308239_test3.Designer.cs">
+      <DependentUpon>201908032308239_test3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908032323370_test4.cs" />
+    <Compile Include="Migrations\201908032323370_test4.Designer.cs">
+      <DependentUpon>201908032323370_test4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -266,6 +274,11 @@
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Comments\EmptyComments.cshtml" />
     <Content Include="Views\Home\AddprofilePic.cshtml" />
+    <Content Include="Views\Home\showAllUsers.cshtml" />
+    <Content Include="Views\Home\showusers.cshtml" />
+    <Content Include="Views\Home\updateprofile.cshtml" />
+    <Content Include="Views\Home\Update_profile.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -287,6 +300,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201907311656526_test2.resx">
       <DependentUpon>201907311656526_test2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908032308239_test3.resx">
+      <DependentUpon>201908032308239_test3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908032323370_test4.resx">
+      <DependentUpon>201908032323370_test4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

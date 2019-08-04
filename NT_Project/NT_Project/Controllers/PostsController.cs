@@ -68,7 +68,7 @@ namespace NT_Project.Controllers
                 //    ImgFile.SaveAs(filename);
                 //}
                 var cur_user = User.Identity.GetUserId();
-                ApplicationUser current_user = new ApplicationUser();
+                //ApplicationUser current_user = new ApplicationUser();
                 //var user = from userss in db.Users
                 //           where userss.Id == cur_user
                 //           select userss;

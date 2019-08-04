@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,12 +12,16 @@ namespace NT_Project.Controllers
 {
     public class HomeController : Controller
     {
+        //private readonly UserManager<ApplicationUser> userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
         
+       
         public ActionResult Index()
         {
 
             var cur_id = User.Identity.GetUserId();
+
+
             var friends1 = from relationship in db.Relationships
                            where relationship.UserId == cur_id
                            where relationship.Status == 2
@@ -27,7 +32,8 @@ namespace NT_Project.Controllers
                            select relationship.UserId;
 
             var friends = friends1.ToList().Concat(friends2.ToList()).ToList();
-
+            ApplicationUser x = db.Users.Where(e => e.Id == cur_id).First();
+           //x.post.First()
             List<Post> Posts = new List<Post>();
             if (friends!= null)
             {
@@ -40,13 +46,16 @@ namespace NT_Project.Controllers
                         {
                             var name = from user in db.Users
                                        where user.Id == posts2.user_id_for_posts
-                                       select user.FullName;
+                                       select new { user.FullName, user.Photo_Url};
                             var comms = from com in db.comments
                                         where com.post_id == posts2.id.ToString()
                                         select com.id;
                             posts2.no_of_comms = comms.ToList().Count.ToString();
-                            foreach (string i in name)
-                            posts2.name = i;
+                            
+                            foreach (var i in name)
+                            { posts2.name = i.FullName;
+                                posts2.pic=i.Photo_Url;
+                            }
                             Posts.Add(posts2);
                             
                         }
@@ -61,14 +70,17 @@ namespace NT_Project.Controllers
                     {
                     var name = from user in db.Users
                                where user.Id == posts.user_id_for_posts
-                               select user.FullName;
+                               select new { user.FullName, user.Photo_Url };
 
                     var comms = from com in db.comments
                                 where com.post_id == posts.id.ToString()
                                 select com.id;
                     posts.no_of_comms = comms.ToList().Count.ToString();
-                    foreach (string i in name)
-                        posts.name = i;
+                    foreach (var i in name)
+                    {
+                        posts.name = i.FullName.ToString();
+                        posts.pic=i.Photo_Url;
+                    }
                     Posts.Add(posts);
                 }
 
@@ -81,16 +93,27 @@ namespace NT_Project.Controllers
                 return View(ord_posts.ToList());
         }
 
-        public ActionResult AddprofilePic()
-        {
-            return View();
-        }
-        //[HttpPost]
-        //public Action AddProfile()
+        //public ActionResult AddprofilePic()
         //{
+        //    return View();
+        //}
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<ActionResult> AddProfile(ApplicationUser user)
+        //{
+        //    IdentityResult x = await userManager.UpdateAsync(user);
+
+        //    //if (x.Succeeded)
+        //    //{
+        //    //    //UserManager<ApplicationUser>.Update(user);
+        //    //    //db.SaveChanges();
+        //    //    return RedirectToAction("Index");
+        //    //}
+
+        //    return RedirectToAction("Index");
             
         //}
-
+        [Authorize]
         public ActionResult Friends()
         {
             var myID = User.Identity.GetUserId();
@@ -108,8 +131,10 @@ namespace NT_Project.Controllers
                         where ( relations.UserId == myID)
                         where relations.Status == 2
                         select user).ToList();
-
+            if (User.IsInRole("CanShowUsers"))
+                return View("Index");
             return View(users.Concat(users2).ToList());
+
         }
 
 
@@ -128,10 +153,141 @@ namespace NT_Project.Controllers
             });
             db.SaveChanges();
 
+            if (User.IsInRole("CanShowUsers"))
+                return View("Index");
             return RedirectToAction("Index");
+        }
+        public ActionResult Update_profile()
+        {
+            var myID = User.Identity.GetUserId();
+            var userupdate = db.Users.Where(u => u.Id == myID).First();
+
+            return View(userupdate);
         }
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update_profile(RegisterViewModel model)
+        {
+            var myID = User.Identity.GetUserId();
+
+            var uservar = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                Bio = model.Bio,
+                Photo_Url = model.Photo_Url,
+                PhoneNumber = model.phonenumber
+            };
+
+            var userupdate = db.Users.Where(u => u.Id == myID).First();
+
+
+            if (uservar.UserName != null)
+                userupdate.FullName = uservar.UserName;
+
+
+            if (uservar.Bio != null)
+                userupdate.Bio = uservar.Bio;
+            if (uservar.Photo_Url != null)
+                userupdate.Photo_Url = uservar.Photo_Url;
+            if (uservar.PhoneNumber != null)
+                userupdate.PhoneNumber = uservar.PhoneNumber;
+
+
+            db.SaveChanges();
+
+            return RedirectToAction("Update_profile", "Home");
+        }
+
+        [Authorize]
+        public ActionResult Unfriend(string id )
+        {
+            var myID = User.Identity.GetUserId();
+
+            NT_Project.Models.Relationship rel = db.Relationships.Where(a => (a.UserId == id && a.FriendId == myID)
+            || (a.FriendId == id && a.UserId == myID)).FirstOrDefault();
+
+            db.Relationships.Remove(rel);
+
+            db.SaveChanges();
+            return RedirectToAction("Friends");
+
+        }
+
+
+        [Authorize(Roles = "CanShowUsers")]
+        public ActionResult DeleteUser(string id)
+        {
+            var postt = (from Post in db.posts
+                         where Post.user_id_for_posts.ToString() == id
+                         select Post).ToList();
+
+            if (postt.Count() > 0)
+            {
+                NT_Project.Models.Post post_delete = db.posts.Where(a => a.user_id_for_posts.ToString() == id).FirstOrDefault();
+                NT_Project.Models.Comment comm_post = db.comments.Where(a => a.post_id.ToString() == post_delete.id.ToString()).FirstOrDefault();
+
+                db.comments.Remove(comm_post);
+                db.posts.Remove(post_delete);
+
+            }
+
+            var com = (from Comment in db.comments
+                       where Comment.user_id_for_comment.ToString() == id
+                       select Comment).ToList();
+
+            if (com.Count() > 0)
+            {
+                NT_Project.Models.Comment comm_delete = db.comments.Where(a => a.user_id_for_comment.ToString() == id).FirstOrDefault();
+
+                db.comments.Remove(comm_delete);
+
+            }
+
+
+            var reltuser = (from relationship in db.Relationships
+                            where relationship.UserId.ToString() == id
+                            select relationship).ToList();
+
+            var reltfriend = (from relationship in db.Relationships
+                              where relationship.FriendId.ToString() == id
+                              select relationship).ToList();
+
+            if (reltuser.Count() > 0)
+            {
+                NT_Project.Models.Relationship relation = db.Relationships.Where(a => a.UserId == id).FirstOrDefault();
+                db.Relationships.Remove(relation);
+            }
+            if (reltfriend.Count() > 0)
+            {
+                NT_Project.Models.Relationship relation = db.Relationships.Where(a => a.FriendId == id).FirstOrDefault();
+                db.Relationships.Remove(relation);
+            }
+
+            NT_Project.Models.ApplicationUser user = db.Users.Where(a => a.Id == id).FirstOrDefault();
+
+            db.Users.Remove(user);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "CanShowUsers")]
+        public ActionResult showusers()  //de hna ely bte3redly kol al users ely fl database
+        {
+            var myID = User.Identity.GetUserId();
+
+            //var list_users = (from user in db.Users
+            //                  where user.Id != myID
+            //                 select user).ToList();
+            var users = db.Users.Where(x => x.Id != myID).ToList();
+
+            return View(users);
+        }
 
         [Authorize]
         public ActionResult Search(string search)
@@ -147,10 +303,11 @@ namespace NT_Project.Controllers
                            select relationship.UserId;
 
             ViewBag.userRelation = friends1.ToList().Concat(friends2.ToList()).ToList();
-            
-            var users = db.Users.Where( a => a.Id != myID && (a.FullName.Contains(search) || 
-                                        a.Email.Contains(search) || a.PhoneNumber.Contains(search)) ).ToList();
 
+            var users = db.Users.Where(a => a.Id != myID && (a.FullName.Contains(search) ||
+                                       a.Email.Contains(search) || a.PhoneNumber.Contains(search)) && a.Email != "Admin@gmail.com").ToList();
+            if (User.IsInRole("CanShowUsers"))
+                return View("Index");
             return View(users);
         }
 
@@ -161,7 +318,7 @@ namespace NT_Project.Controllers
 
             return View();
         }
-
+        [Authorize]
         public ActionResult Requests()
         {
             var myID = User.Identity.GetUserId();
@@ -172,10 +329,12 @@ namespace NT_Project.Controllers
                         where relations.FriendId == myID
                         where relations.Status == 1
                         select user;
-            
+
+            if (User.IsInRole("CanShowUsers"))
+                return View("Index");
             return View(users.ToList());
         }
-
+        [Authorize]
         public ActionResult AcceptFriend(string id)
         {
             var myID = User.Identity.GetUserId();
@@ -185,12 +344,11 @@ namespace NT_Project.Controllers
             db.Entry(relation).State = EntityState.Modified;
             db.SaveChanges();
 
+            if (User.IsInRole("CanShowUsers"))
+                return View("Index");
             return RedirectToAction("Index");
         }
 
-       
-
-       
 
     }
 }

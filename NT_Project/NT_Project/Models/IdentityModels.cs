@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,11 +17,13 @@ namespace NT_Project.Models
 
         public string Photo_Url { get; set; }
 
-        public ICollection<Relationship> Relationships { get; set; }
+        [InverseProperty("Friend")]
+        public virtual ICollection<Relationship> FriendRelationships { get; set; }
+        [InverseProperty("User")]
+        public virtual ICollection<Relationship> UserRelationships { get; set; }
+        public virtual ICollection<Post> post { get; set; }
 
-        public ICollection<Post> post { get; set; }
-
-        public ICollection<Comment> comments { get; set; }
+        public virtual ICollection<Comment> comments { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
