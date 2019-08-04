@@ -57,9 +57,12 @@ namespace NT_Project.Controllers
             }
         }
 
-        public ActionResult Profile ()
+        public ActionResult Profile (string cur_id)
         {
-            var cur_id = User.Identity.GetUserId();
+            
+            if (cur_id == null)
+                 cur_id = User.Identity.GetUserId();
+
             ApplicationUser user2 = db.Users.Where(u => u.Id == cur_id).FirstOrDefault();
             List<Post> Posts = new List<Post>();
             
@@ -88,6 +91,7 @@ namespace NT_Project.Controllers
 
 
 
+            cur_id = User.Identity.GetUserId();
 
             var users = (from relations in db.Relationships
                          join user in db.Users

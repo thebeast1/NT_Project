@@ -83,9 +83,6 @@ G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.csp
 G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.CopyComplete
 G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.dll
 G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.pdb
-G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.InitialCreate.resources
-G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.GenerateResource.cache
-G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.Relationship.resources
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\bin\NT_Project.dll.config
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\bin\NT_Project.dll
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\bin\NT_Project.pdb
@@ -175,3 +172,5 @@ C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.GenerateResource.cache
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.test3.resources
 C:\Users\hp\Desktop\NT intern\project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.test4.resources
+G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.Migrations.databaseDesign.resources
+G:\my courses\ASP.net\UML\Project\NT_Project\NT_Project\obj\Debug\NT_Project.csproj.GenerateResource.cache

@@ -176,17 +176,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907311656526_test2.cs" />
-    <Compile Include="Migrations\201907311656526_test2.Designer.cs">
-      <DependentUpon>201907311656526_test2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908032308239_test3.cs" />
-    <Compile Include="Migrations\201908032308239_test3.Designer.cs">
-      <DependentUpon>201908032308239_test3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908032323370_test4.cs" />
-    <Compile Include="Migrations\201908032323370_test4.Designer.cs">
-      <DependentUpon>201908032323370_test4.cs</DependentUpon>
+    <Compile Include="Migrations\201908041926021_databaseDesign.cs" />
+    <Compile Include="Migrations\201908041926021_databaseDesign.Designer.cs">
+      <DependentUpon>201908041926021_databaseDesign.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -208,6 +200,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="pen.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -298,14 +291,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907311656526_test2.resx">
-      <DependentUpon>201907311656526_test2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908032308239_test3.resx">
-      <DependentUpon>201908032308239_test3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908032323370_test4.resx">
-      <DependentUpon>201908032323370_test4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908041926021_databaseDesign.resx">
+      <DependentUpon>201908041926021_databaseDesign.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

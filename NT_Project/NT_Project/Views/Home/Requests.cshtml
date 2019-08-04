@@ -4,13 +4,11 @@
     ViewBag.Title = "Requests";
 }
 
-<h2>Requests</h2>
+<h2 style="color:#86C232">Requests</h2>
+<br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
-    <tr>
+    <tr style="color:#61892F">
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
@@ -30,7 +28,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr style="color:#6B6E70">
         <td>
             @Html.DisplayFor(modelItem => item.FullName)
         </td>
@@ -47,7 +45,7 @@
             @Html.DisplayFor(modelItem => item.PhoneNumber)
         </td>
         <td>
-            @Html.ActionLink("Accept", "AcceptFriend", new { id=item.Id }) |
+            @Html.ActionLink("Accept", "AcceptFriend", new { id=item.Id }) 
         </td>
     </tr>
 }

@@ -199,7 +199,7 @@ namespace NT_Project.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("Update_profile", "Home");
+            return RedirectToAction("Profile", "Account");
         }
 
         [Authorize]

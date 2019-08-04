@@ -4,13 +4,11 @@
     ViewBag.Title = "Friends";
 }
 
-<h2>Friends</h2>
+<h2 style="color:#86C232">Friends</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<br />
 <table class="table">
-    <tr>
+    <tr style="color:#61892F">
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
@@ -25,7 +23,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr style="color:#6B6E70">
         <td>
             @Html.DisplayFor(modelItem => item.FullName)
         </td>
@@ -36,7 +34,7 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("UnFriend", "Unfriend", new { id=item.Id }) |
+            @Html.ActionLink("UnFriend", "Unfriend", new { id=item.Id }) 
         </td>
     </tr>
 }

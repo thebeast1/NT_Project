@@ -9,7 +9,7 @@ namespace NT_Project.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(NT_Project.Models.ApplicationDbContext context)

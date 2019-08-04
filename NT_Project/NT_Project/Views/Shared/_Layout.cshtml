@@ -24,8 +24,9 @@
                     @if (!User.IsInRole("CanShowUsers"))
                     {
                         <li>@Html.ActionLink("Friends", "Friends", "Home")</li>
-                        <li>@Html.ActionLink("update profile", "Update_profile", "Home")</li>
                         <li>@Html.ActionLink("Requests", "Requests", "Home")</li>
+                        <li>@Html.ActionLink("Profile", "Profile", "Account")</li>
+
                         <li>
                             @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-inline" }))
                             {
@@ -33,7 +34,6 @@
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-top:10px;">Search</button>
                             }
                         </li>
-                        <li>@Html.ActionLink("Profile", "Profile", "Account")</li>
 
                     }
                     else if (User.IsInRole("CanShowUsers"))
@@ -50,7 +50,7 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+       
       
     </div>
 
