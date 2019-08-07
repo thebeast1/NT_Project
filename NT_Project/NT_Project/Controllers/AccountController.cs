@@ -57,13 +57,14 @@ namespace NT_Project.Controllers
             }
         }
 
+        
         public ActionResult Profile (string cur_id)
         {
             
             if (cur_id == null)
                  cur_id = User.Identity.GetUserId();
 
-            ApplicationUser user2 = db.Users.Where(u => u.Id == cur_id).FirstOrDefault();
+            ApplicationUser curent_user = db.Users.Where(u => u.Id == cur_id).FirstOrDefault();
             List<Post> Posts = new List<Post>();
             
             foreach (var posts in db.posts)
@@ -87,11 +88,26 @@ namespace NT_Project.Controllers
                 }
 
             }
+
             ViewBag.Posts = Posts;
-
-
-
+            
             cur_id = User.Identity.GetUserId();
+
+
+
+           /* var friends = curent_user.FriendRelationships.ToList().Concat(curent_user.UserRelationships.ToList()).ToList();
+            
+            List<string> listOfFriends = new List<string>();
+            foreach (var item in friends)
+            {
+                if(item.UserId == cur_id)
+                {
+                    listOfFriends.add(item.FriendId);
+                }else if(item.FriendId == cur_id)
+                {
+
+                }
+            }*/
 
             var users = (from relations in db.Relationships
                          join user in db.Users
@@ -106,11 +122,12 @@ namespace NT_Project.Controllers
                           where (relations.UserId == cur_id)
                           where relations.Status == 2
                           select user).ToList();
-            users.ToList().Concat(users2.ToList()).ToList();
+
+            users = users.ToList().Concat(users2.ToList()).ToList();
 
             ViewBag.Friends = users;
 
-            return View(user2);
+            return View(curent_user);
         }
 
         //
